@@ -8,9 +8,7 @@ return {
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.colorscheme.catppuccin" },
   { import = "astrocommunity.editing-support.nvim-context-vt" },
-  { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.pack.bash" },
-  { import = "astrocommunity.pack.docker" },
   { import = "astrocommunity.pack.json" },
   { import = "astrocommunity.pack.markdown" },
   { import = "astrocommunity.pack.proto" },
@@ -19,5 +17,6 @@ return {
   { import = "astrocommunity.pack.thrift" },
   { import = "astrocommunity.pack.terraform" },
   { import = "astrocommunity.pack.sql" },
+  { import = "astrocommunity.pack.go" },
   -- import/override with your plugins folder
 }
