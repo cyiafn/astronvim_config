@@ -17,6 +17,5 @@ return {
   { import = "astrocommunity.pack.thrift" },
   { import = "astrocommunity.pack.terraform" },
   { import = "astrocommunity.pack.sql" },
-  { import = "astrocommunity.pack.go" },
   -- import/override with your plugins folder
 }
