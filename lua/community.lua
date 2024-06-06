@@ -7,7 +7,6 @@ return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.colorscheme.catppuccin" },
-  { import = "astrocommunity.editing-support.nvim-context-vt" },
   { import = "astrocommunity.pack.bash" },
   { import = "astrocommunity.pack.json" },
   { import = "astrocommunity.pack.markdown" },
