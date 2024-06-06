@@ -18,5 +18,6 @@ return {
   { import = "astrocommunity.pack.terraform" },
   { import = "astrocommunity.pack.sql" },
   { import = "astrocommunity.git.git-blame-nvim" },
+  { import = "astrocommunity.pack.go" },
   -- import/override with your plugins folder
 }
