@@ -16,3 +16,7 @@ vim.filetype.add {
     ["~/%.config/foo/.*"] = "fooscript",
   },
 }
+
+vim.g.go_gopls_analyses = {
+  ST1001 = false,
+}
