@@ -19,6 +19,5 @@ return {
   { import = "astrocommunity.git.git-blame-nvim" },
   { import = "astrocommunity.pack.cpp" },
   { import = "astrocommunity.pack.ocaml" },
-  { import = "astrocommunity.pack.go" },
   -- import/override with your plugins folder
 }
