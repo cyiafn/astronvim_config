@@ -6,6 +6,7 @@ return {
         keymaps = {
           accept_suggestion = "<C-Tab>",
         },
+        log_level = "warn",
       }
     end,
   },
