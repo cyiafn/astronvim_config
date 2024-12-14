@@ -624,122 +624,7 @@ require("lazy").setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        gopls = {
-          capabilities = {
-            textDocument = {
-              completion = {
-                completionItem = {
-                  commitCharactersSupport = true,
-                  deprecatedSupport = true,
-                  documentationFormat = { "markdown", "plaintext" },
-                  preselectSupport = true,
-                  insertReplaceSupport = true,
-                  labelDetailsSupport = true,
-                  snippetSupport = true,
-                  resolveSupport = {
-                    properties = {
-                      "documentation",
-                      "details",
-                      "additionalTextEdits",
-                    },
-                  },
-                },
-                contextSupport = true,
-                dynamicRegistration = true,
-              },
-            },
-          },
-          filetypes = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },
-          message_level = vim.lsp.protocol.MessageType.Error,
-          cmd = {
-            "gopls", -- share the gopls instance if there is one already
-            "-remote.debug=:0",
-          },
-          root_dir = function(fname)
-            local has_lsp, lspconfig = pcall(require, "lspconfig")
-            if has_lsp then
-              local util = lspconfig.util
-              return util.root_pattern("go.work", "go.mod")(fname)
-                or util.root_pattern ".git"(fname)
-                or util.path.dirname(fname)
-            end
-          end,
-          flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
-          settings = {
-            gopls = {
-              -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-              -- https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
-              -- not supported
-              analyses = {
-                unreachable = true,
-                nilness = true,
-                unusedparams = true,
-                useany = true,
-                unusedwrite = true,
-                ST1003 = true,
-                undeclaredname = true,
-                fillreturns = true,
-                nonewvars = true,
-                fieldalignment = false,
-                shadow = true,
-                appends = true,
-                assign = true,
-                atomic = true,
-                copylocks = true,
-                deepequalerrors = true,
-                defers = true,
-                deprecated = true,
-                directive = true,
-                errorsas = true,
-                httpresponse = true,
-                ifaceassert = true,
-                loopclosure = true,
-                lostcancel = true,
-                nilfunc = true,
-                printf = true,
-                shift = true,
-                sigchanyzer = true,
-                simplifycompositelit = true,
-                simplifyrange = true,
-                simplifyslice = true,
-                stdmethods = true,
-                stringintconv = true,
-                structtag = true,
-                timeformat = true,
-                unmarshal = true,
-                unsafeptr = true,
-                unusedresult = true,
-                unusedvariable = true,
-                waitgroup = true,
-                yield = true,
-              },
-              codelenses = {
-                generate = true, -- show the `go generate` lens.
-                gc_details = true, -- Show a code lens toggling the display of gc's choices.
-                test = true,
-                tidy = true,
-                vendor = true,
-                regenerate_cgo = true,
-                upgrade_dependency = true,
-                vulncheck = true,
-              },
-              hints = vim.empty_dict(),
-              usePlaceholders = true,
-              completeUnimported = true,
-              staticcheck = true,
-              matcher = "Fuzzy",
-              -- check if diagnostic update_in_insert is set
-              diagnosticsDelay = diagDelay,
-              diagnosticsTrigger = diagTrigger,
-              symbolMatcher = "FastFuzzy",
-              semanticTokens = true,
-              noSemanticString = true, -- disable semantic string tokens so we can use treesitter highlight injection
-              vulncheck = "Imports",
-              gofumpt = true,
-              buildFlags = { "-tags", "integration" },
-            },
-          },
-        },
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -795,6 +680,15 @@ require("lazy").setup({
           end,
         },
       }
+
+      require("mason-lspconfig").setup()
+      require("go").setup {
+        lsp_cfg = false,
+        -- other setups...
+      }
+      local cfg = require("go.lsp").config() -- config() return the go.nvim gopls setup
+
+      require("lspconfig").gopls.setup(cfg)
     end,
   },
 
