@@ -209,6 +209,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then error("Error cloning lazy.nvim:\n" .. out) end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
+vim.lsp.inlay_hint.enable(true)
 
 require "custom-bindings"
 
@@ -460,7 +461,18 @@ require("lazy").setup({
     "neovim/nvim-lspconfig",
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+      {
+        "williamboman/mason.nvim",
+        config = true,
+        opts = {
+          ensure_installed = {
+            "clangd",
+            "gopls",
+            "golines",
+            "gofumpt",
+          },
+        },
+      }, -- NOTE: Must be loaded before dependants
       { "williamboman/mason-lspconfig.nvim", version = "v1" },
       "WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -625,7 +637,7 @@ require("lazy").setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -688,6 +700,7 @@ require("lazy").setup({
         -- other setups...
       }
       local cfg = require("go.lsp").config() -- config() return the go.nvim gopls setup
+      cfg.settings.gopls.gofumpt = true
       require("lspconfig").gopls.setup(cfg)
     end,
   },
@@ -705,7 +718,7 @@ require("lazy").setup({
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -724,7 +737,8 @@ require("lazy").setup({
       end,
       formatters_by_ft = {
         lua = { "stylua" },
-        go = { "gofumpt" },
+        go = { "golines", "gofumpt" },
+        cpp = { "clang-format" },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -914,6 +928,7 @@ require("lazy").setup({
         "query",
         "vim",
         "vimdoc",
+        "cpp",
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -943,6 +958,7 @@ require("lazy").setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
+
   -- require 'kickstart.plugins.debug',
   require "kickstart.plugins.indent_line",
   require "kickstart.plugins.lint",
@@ -956,9 +972,15 @@ require("lazy").setup({
   require "custom.plugins.comment",
   require "custom.plugins.session",
   require "custom.plugins.lazygit",
+  require "custom.plugins.notif",
 
   -- lang
   require "custom.lang.go",
+
+  -- apps
+  require "custom.plugins.leetcode",
+
+  -- formatters
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -998,7 +1020,6 @@ require("lazy").setup({
 --
 -- Color
 local highlight = {
-  "RainbowRed",
   "RainbowYellow",
   "RainbowBlue",
   "RainbowOrange",
@@ -1010,7 +1031,6 @@ local hooks = require "ibl.hooks"
 -- create the highlight groups in the highlight setup hook, so they are reset
 -- every time the colorscheme changes
 hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-  vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
   vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
   vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
   vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
@@ -1023,3 +1043,5 @@ vim.g.rainbow_delimiters = { highlight = highlight }
 require("ibl").setup { scope = { highlight = highlight }, indent = { tab_char = "|" } }
 
 hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+
+vim.notify = require "notify"

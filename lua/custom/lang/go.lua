@@ -32,15 +32,8 @@ return {
         lsp_inlay_hints = {
           enable = true, -- this is the only field apply to neovim > 0.10
         },
+        lsp_keymaps = false,
       }
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = "*.go",
-        callback = function()
-          local cursor_pos = vim.api.nvim_win_get_cursor(0) -- Save the current cursor position
-          vim.cmd "silent! %!gofumpt | golines --max-len=120"
-          vim.api.nvim_win_set_cursor(0, cursor_pos) -- Restore the cursor position
-        end,
-      })
     end,
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
