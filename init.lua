@@ -311,8 +311,10 @@ require("lazy").setup({
       -- Document existing key chains
       spec = {
         { "<leader>l", group = "[l]sp", mode = { "n", "x" } },
-        { "<leader>f", group = "[--[[ f]ind" },
-        { "<leader>b", group = "[b ]]]uffer management" },
+        { "<leader>f", group = "[f]ind" },
+        { "<leader>b", group = "[b]uffer management" },
+        { "<leader>g", group = "[g]it" },
+        { "<leader>t", group = "[t]oggle" },
       },
     },
   },
@@ -686,7 +688,6 @@ require("lazy").setup({
         -- other setups...
       }
       local cfg = require("go.lsp").config() -- config() return the go.nvim gopls setup
-
       require("lspconfig").gopls.setup(cfg)
     end,
   },
