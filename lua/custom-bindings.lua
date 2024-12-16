@@ -2,7 +2,7 @@ local map = vim.api.nvim_set_keymap
 
 -- general
 map("n", "<leader>w", ":w<CR>", { silent = false, desc = "[w]rite file" })
-map("n", "<leader>q", ":wq<CR>", { silent = false, desc = "[q]uit buffer" })
+map("n", "<leader>q", ":q<CR>", { silent = false, desc = "[q]uit buffer" })
 
 -- buffer
 vim.keymap.set("n", "<leader>c", ":bdelete<CR>", { desc = "Close current buffer" })
