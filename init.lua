@@ -857,14 +857,28 @@ require("lazy").setup({
   },
 
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000, -- Ensure it loads before other UI customizations
-    config = function()
-      require("catppuccin").setup {
-        flavour = "macchiato", -- Choose between "latte", "frappe", "macchiato", and "mocha"
-      }
-      vim.cmd.colorscheme "catppuccin"
+    "0xstepit/flow.nvim",
+    lazy = false,
+    priority = 1000,
+    tag = "v2.0.0",
+    opts = {
+      theme = {
+        transparent = true,
+        constrast = "default",
+        style = "dark",
+      },
+      colors = {
+        mode = "default", -- "default" | "dark" | "light"
+        fluo = "pink", -- "pink" | "cyan" | "yellow" | "orange" | "green"
+      },
+      ui = {
+        borders = "inverse", -- "theme" | "inverse" | "fluo" | "none"
+        aggressive_spell = false, -- true | false
+      },
+    },
+    config = function(_, opts)
+      require("flow").setup(opts)
+      vim.cmd "colorscheme flow"
     end,
   },
   -- Highlight todo, notes, etc in comments
