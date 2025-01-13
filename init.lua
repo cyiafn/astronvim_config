@@ -987,7 +987,7 @@ require("lazy").setup({
   require "custom.plugins.session",
   require "custom.plugins.lazygit",
   require "custom.plugins.notif",
-
+  require "custom.plugins.ai",
   -- lang
   require "custom.lang.go",
 
