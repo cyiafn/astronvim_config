@@ -4,8 +4,8 @@ return {
     config = function()
       require("supermaven-nvim").setup {
         keymaps = {
-          accept_suggestion = "<C-Tab>",
-          clear_suggestion = "<C-Esc>",
+          accept_suggestion = "<A-Tab>",
+          clear_suggestion = "<A-Esc>",
         },
       }
     end,
