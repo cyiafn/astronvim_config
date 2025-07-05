@@ -155,6 +155,10 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Set terminal title to show current directory
+vim.opt.title = true
+vim.opt.titlestring = "nvim %{fnamemodify(getcwd(), ':t')}"
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -270,7 +274,7 @@ require("lazy").setup({
 
   { -- Useful plugin to show you pending keybinds.
     "folke/which-key.nvim",
-    event = "VimEnter", -- Sets the loading event to 'VimEnter'
+    event = "VeryLazy", -- Sets the loading event to 'VeryLazy'
     opts = {
       icons = {
         -- set icon mappings to true if you have a Nerd Font
@@ -473,8 +477,7 @@ require("lazy").setup({
           },
         },
       }, -- NOTE: Must be loaded before dependants
-      { "williamboman/mason-lspconfig.nvim", version = "v1" },
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
+      { "williamboman/mason-lspconfig.nvim" },
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -676,34 +679,24 @@ require("lazy").setup({
       --  You can press `g?` for help in this menu.
       require("mason").setup()
 
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        "stylua", -- Used to format Lua code
-      })
-      require("mason-tool-installer").setup { ensure_installed = ensure_installed }
+      -- Note: stylua and other non-LSP tools need to be installed manually via :Mason
+      -- mason-lspconfig only handles LSP servers
 
       require("mason-lspconfig").setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-            require("lspconfig")[server_name].setup(server)
-          end,
-        },
+        ensure_installed = vim.tbl_keys(servers or {}),
+        automatic_installation = true,
       }
 
-      require("go").setup {
-        lsp_cfg = false,
-        -- other setups...
-      }
-      local cfg = require("go.lsp").config() -- config() return the go.nvim gopls setup
-      cfg.settings.gopls.gofumpt = true
-      require("lspconfig").gopls.setup(cfg)
+      -- Set up individual servers
+      local lspconfig = require "lspconfig"
+      for server_name, server_config in pairs(servers) do
+        -- This handles overriding only values explicitly passed
+        -- by the server configuration above. Useful when disabling
+        -- certain features of an LSP (for example, turning off formatting for ts_ls)
+        server_config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
+        lspconfig[server_name].setup(server_config)
+      end
+
     end,
   },
 
