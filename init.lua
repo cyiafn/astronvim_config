@@ -696,7 +696,6 @@ require("lazy").setup({
         server_config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
         lspconfig[server_name].setup(server_config)
       end
-
     end,
   },
 
@@ -852,28 +851,71 @@ require("lazy").setup({
   },
 
   {
-    "0xstepit/flow.nvim",
+    "rebelot/kanagawa.nvim",
     lazy = false,
     priority = 1000,
-    tag = "v2.0.0",
     opts = {
-      theme = {
-        transparent = true,
-        constrast = "default",
-        style = "dark",
-      },
+      compile = false,
+      undercurl = true,
+      commentStyle = { italic = true },
+      functionStyle = {},
+      keywordStyle = { italic = true },
+      statementStyle = { bold = true },
+      typeStyle = {},
+      transparent = true,
+      dimInactive = false,
+      terminalColors = true,
       colors = {
-        mode = "default", -- "default" | "dark" | "light"
-        fluo = "pink", -- "pink" | "cyan" | "yellow" | "orange" | "green"
+        palette = {
+          -- Make colors more vibrant/saturated
+          dragonRed = "#ff5d62",
+          dragonOrange = "#ff9e3b", 
+          dragonYellow = "#e6c384",
+          dragonGreen = "#98bb6c",
+          dragonBlue = "#7fb4ca",
+          dragonAqua = "#7aa89f",
+          dragonPurple = "#957fb8",
+          dragonGray = "#c8c093",
+          dragonPink = "#d27e99",
+          dragonViolet = "#957fb8",
+        },
+        theme = { 
+          dragon = {
+            syn = {
+              string = "#98bb6c",      -- More vibrant green
+              variable = "none",
+              number = "#ff9e3b",       -- Brighter orange
+              constant = "#ff9e3b",
+              identifier = "#7fb4ca",   -- Brighter blue
+              parameter = "#e6c384",    -- Brighter yellow
+              fun = "#7fb4ca",          -- Brighter blue
+              statement = "#957fb8",    -- More vibrant purple
+              keyword = "#957fb8",      -- More vibrant purple
+              operator = "#c8c093",
+              preproc = "#ff5d62",      -- Brighter red
+              type = "#7aa89f",         -- Brighter aqua
+              regex = "#ff9e3b",
+              deprecated = "#717c7c",
+              comment = "#7a8382",      -- Slightly brighter comments
+              punct = "#c8c093",
+              special1 = "#7aa89f",
+              special2 = "#e6c384",
+              special3 = "#ff5d62",
+            },
+          },
+          wave = {}, lotus = {}, all = {},
+        },
       },
-      ui = {
-        borders = "inverse", -- "theme" | "inverse" | "fluo" | "none"
-        aggressive_spell = false, -- true | false
+      overrides = function(colors) return {} end,
+      theme = "dragon",
+      background = {
+        dark = "dragon",
+        light = "lotus",
       },
     },
     config = function(_, opts)
-      require("flow").setup(opts)
-      vim.cmd "colorscheme flow"
+      require("kanagawa").setup(opts)
+      vim.cmd "colorscheme kanagawa-dragon"
     end,
   },
   -- Highlight todo, notes, etc in comments
