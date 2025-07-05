@@ -868,7 +868,7 @@ require("lazy").setup({
       colors = {
         palette = {
           -- Make colors more vibrant/saturated
-          dragonRed = "#ff5d62",
+          dragonRed = "#ff2d35",
           dragonOrange = "#ff9e3b", 
           dragonYellow = "#e6c384",
           dragonGreen = "#98bb6c",
@@ -892,7 +892,7 @@ require("lazy").setup({
               statement = "#957fb8",    -- More vibrant purple
               keyword = "#957fb8",      -- More vibrant purple
               operator = "#c8c093",
-              preproc = "#ff5d62",      -- Brighter red
+              preproc = "#ff2d35",      -- Brighter red
               type = "#7aa89f",         -- Brighter aqua
               regex = "#ff9e3b",
               deprecated = "#717c7c",
@@ -900,7 +900,7 @@ require("lazy").setup({
               punct = "#c8c093",
               special1 = "#7aa89f",
               special2 = "#e6c384",
-              special3 = "#ff5d62",
+              special3 = "#ff2d35",
             },
           },
           wave = {}, lotus = {}, all = {},
