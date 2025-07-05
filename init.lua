@@ -655,6 +655,11 @@ require("lazy").setup({
         -- ts_ls = {},
         --
 
+        ocamllsp = {
+          -- OCaml LSP server configuration
+          settings = {},
+        },
+
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
